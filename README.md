@@ -1,4 +1,4 @@
-# Biblioteka — Zajęcia 1
+# Biblioteka - Zajęcia 1
 
 Aplikacja zaliczeniowa z przedmiotu Programowanie Wysokopoziomowe.
 
@@ -6,7 +6,7 @@ Aplikacja zaliczeniowa z przedmiotu Programowanie Wysokopoziomowe.
 
 ## Temat
 
-Aplikacja biblioteczna — Zajęcia 1
+Aplikacja biblioteczna - Zajęcia 1
 
 ---
 
