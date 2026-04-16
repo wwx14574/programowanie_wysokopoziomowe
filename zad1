@@ -7,7 +7,6 @@ ksiazki = [
     {"tytul": "Harry Potter", "autor": "J.K. Rowling", "sztuki": 5}
 ]
 
-
 # Lista użytkowników
 uzytkownicy = [
     {"login": "ania", "haslo": "1234", "rola": "czytelnik", "wypozyczenia": []},
