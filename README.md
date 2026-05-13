@@ -1,36 +1,75 @@
-# Biblioteka - Zajęcia 1
+# Biblioteka
 
 Aplikacja zaliczeniowa z przedmiotu Programowanie Wysokopoziomowe.
 
 ---
 
-## Temat
+## Zajęcia 1 - Programowanie strukturalne
 
-Aplikacja biblioteczna - Zajęcia 1
+Aplikacja biblioteczna napisana z wykorzystaniem programowania strukturalnego.
 
----
+### Funkcjonalności
 
-## Funkcjonalności
+- logowanie użytkownika
+- limit 3 prób logowania
+- przeglądanie katalogu książek
+- wypożyczanie książek
+- podgląd własnych wypożyczeń
+- wylogowanie
 
-- logowanie użytkownika  
-- limit 3 prób logowania  
-- przeglądanie katalogu książek  
-- wypożyczanie książek  
-- podgląd własnych wypożyczeń  
-- wylogowanie  
-
----
-
-## Dane
+### Dane
 
 Program działa na danych zapisanych na sztywno w kodzie:
 
-- co najmniej 5 książek  
-- 3 użytkowników z rolą „czytelnik”  
+- co najmniej 5 książek
+- 3 użytkowników z rolą „czytelnik”
+
+### Uruchomienie
+
+python3 zad1.py
 
 ---
 
-## Uruchomienie
+## Zajęcia 2 - Programowanie obiektowe
 
-```bash
-python3 zad1.py
+Refaktoryzacja aplikacji do wersji obiektowej (OOP).
+
+### Zastosowane klasy
+
+- Book
+- User
+- Reader
+- Librarian
+- Library
+
+### Funkcjonalności
+
+#### Czytelnik
+
+- logowanie użytkownika
+- przeglądanie katalogu książek
+- wypożyczanie książek
+- podgląd własnych wypożyczeń
+- wysyłanie próśb o przedłużenie
+- wylogowanie
+
+#### Bibliotekarz
+
+- przeglądanie katalogu książek
+- podgląd wszystkich wypożyczeń
+- obsługa próśb o przedłużenie
+- wylogowanie
+
+### Programowanie obiektowe
+
+W projekcie zastosowano:
+
+- klasy i obiekty
+- dziedziczenie
+- hermetyzację
+- polimorfizm
+- metodę specjalną __str__
+
+### Uruchomienie
+
+python3 zad2.py
