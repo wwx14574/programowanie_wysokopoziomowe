@@ -25,9 +25,10 @@ Program działa na danych zapisanych na sztywno w kodzie:
 - 3 użytkowników z rolą „czytelnik”
 
 ### Uruchomienie
-bash
-python3 zad1.py
 
+```bash
+python3 zad1.py
+```
 ---
 
 ## Zajęcia 2 - Programowanie obiektowe
@@ -71,6 +72,7 @@ W projekcie zastosowano:
 - metodę specjalną __str__
 
 ### Uruchomienie
-
+```
 bash
 python3 zad2.py
+```
