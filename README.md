@@ -1,8 +1,7 @@
 # Biblioteka
 
 Aplikacja zaliczeniowa z przedmiotu Programowanie Wysokopoziomowe.
-```
-```
+
 
 ## Zajęcia 2 - Programowanie obiektowe
 
