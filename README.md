@@ -25,7 +25,7 @@ Program działa na danych zapisanych na sztywno w kodzie:
 - 3 użytkowników z rolą „czytelnik”
 
 ### Uruchomienie
-
+bash
 python3 zad1.py
 
 ---
@@ -72,4 +72,5 @@ W projekcie zastosowano:
 
 ### Uruchomienie
 
+bash
 python3 zad2.py
