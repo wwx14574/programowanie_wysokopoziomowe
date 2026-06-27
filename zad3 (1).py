@@ -1,9 +1,12 @@
+# Zajęcia 3 — Programowanie funkcyjne
+
 class Book:
     def __init__(self, title, author, total_copies):
         self.__title = title
         self.__author = author
         self.__total_copies = total_copies
         self.__available_copies = total_copies
+        self.__reservations = []
 
     @property
     def title(self):
@@ -14,8 +17,16 @@ class Book:
         return self.__author
 
     @property
+    def total_copies(self):
+        return self.__total_copies
+
+    @property
     def available_copies(self):
         return self.__available_copies
+
+    @property
+    def reservations(self):
+        return self.__reservations
 
     def borrow_copy(self):
         if self.__available_copies > 0:
@@ -23,12 +34,17 @@ class Book:
             return True
         return False
 
-    def return_copy(self):
-        if self.__available_copies < self.__total_copies:
-            self.__available_copies += 1
+    def add_reservation(self, reader):
+        self.__reservations.append(reader)
+
+    def borrowed_count(self):
+        return self.__total_copies - self.__available_copies
+
+    def has_reservations(self):
+        return len(self.__reservations) > 0
 
     def __str__(self):
-        return f"{self.__title} — {self.__author} | dostępne: {self.__available_copies}/{self.__total_copies}"
+        return f"{self.__title} - {self.__author} | dostępne: {self.__available_copies}/{self.__total_copies}"
 
 
 class User:
@@ -49,7 +65,7 @@ class User:
         return self._password == password
 
     def menu(self):
-        raise NotImplementedError("Klasy pochodne muszą zaimplementować metodę menu().")
+        raise NotImplementedError("Klasa pochodna musi mieć własne menu.")
 
 
 class Reader(User):
@@ -78,8 +94,11 @@ class Reader(User):
         print("2. Wypożycz książkę")
         print("3. Moje wypożyczenia")
         print("4. Prośba o przedłużenie")
-        print("5. Wyloguj")
-        print("6. Zakończ program")
+        print("5. Wyszukaj / filtruj książki")
+        print("6. Posortuj katalog")
+        print("7. Zarezerwuj niedostępną książkę")
+        print("8. Wyloguj")
+        print("9. Zakończ program")
 
 
 class Librarian(User):
@@ -91,8 +110,11 @@ class Librarian(User):
         print("1. Przeglądaj katalog")
         print("2. Lista wypożyczeń")
         print("3. Obsługa próśb o przedłużenie")
-        print("4. Wyloguj")
-        print("5. Zakończ program")
+        print("4. Wyszukaj / filtruj książki")
+        print("5. Posortuj katalog")
+        print("6. Statystyki")
+        print("7. Wyloguj")
+        print("8. Zakończ program")
 
 
 class Library:
@@ -119,10 +141,62 @@ class Library:
                 return book
         return None
 
+    # Funkcja wyższego rzędu — przyjmuje funkcję jako argument
+    def show_filtered_books(self, predicate):
+        filtered_books = list(filter(predicate, self.__books))
+
+        if not filtered_books:
+            print("Brak książek spełniających warunek.")
+            return
+
+        for index, book in enumerate(filtered_books, start=1):
+            print(f"{index}. {book}")
+
     def show_catalog(self):
         print("\n=== KATALOG KSIĄŻEK ===")
+        self.show_filtered_books(lambda book: True)
 
-        for index, book in enumerate(self.__books, start=1):
+    def search_books(self):
+        print("\n=== WYSZUKIWANIE / FILTROWANIE ===")
+        print("1. Szukaj po tytule lub autorze")
+        print("2. Pokaż tylko dostępne książki")
+
+        choice = input("Wybierz opcję: ")
+
+        if choice == "1":
+            phrase = input("Podaj frazę: ").lower()
+
+            # filter + lambda
+            self.show_filtered_books(
+                lambda book: phrase in book.title.lower() or phrase in book.author.lower()
+            )
+
+        elif choice == "2":
+            # filter + lambda
+            self.show_filtered_books(lambda book: book.available_copies > 0)
+
+        else:
+            print("Niepoprawny wybór.")
+
+    def sort_books(self):
+        print("\n=== SORTOWANIE KATALOGU ===")
+        print("1. Według tytułu")
+        print("2. Według autora")
+        print("3. Według liczby dostępnych sztuk")
+
+        choice = input("Wybierz opcję: ")
+
+        if choice == "1":
+            sorted_books = sorted(self.__books, key=lambda book: book.title.lower())
+        elif choice == "2":
+            sorted_books = sorted(self.__books, key=lambda book: book.author.lower())
+        elif choice == "3":
+            sorted_books = sorted(self.__books, key=lambda book: book.available_copies, reverse=True)
+        else:
+            print("Niepoprawny wybór.")
+            return
+
+        for index, book in enumerate(sorted_books, start=1):
             print(f"{index}. {book}")
 
     def borrow_book(self, reader):
@@ -130,24 +204,44 @@ class Library:
         book = self.find_book(title)
 
         if book is None:
-            print("Nie znaleziono książki o podanym tytule.")
+            print("Nie znaleziono książki.")
             return
 
         if book.borrow_copy():
             reader.add_borrowed_book(book)
             print("Książka została wypożyczona.")
         else:
-            print("Brak dostępnych egzemplarzy tej książki.")
+            print("Brak dostępnych egzemplarzy. Możesz zarezerwować tę książkę.")
+
+    def reserve_book(self, reader):
+        print("\n=== REZERWACJA KSIĄŻKI ===")
+        title = input("Podaj tytuł książki do rezerwacji: ")
+        book = self.find_book(title)
+
+        if book is None:
+            print("Nie znaleziono książki.")
+            return
+
+        if book.available_copies > 0:
+            print("Ta książka jest dostępna, możesz ją wypożyczyć.")
+            return
+
+        if reader in book.reservations:
+            print("Masz już rezerwację na tę książkę.")
+            return
+
+        book.add_reservation(reader)
+        print("Książka została zarezerwowana.")
 
     def show_reader_borrowings(self, reader):
         print("\n=== MOJE WYPOŻYCZENIA ===")
 
         if not reader.borrowed_books:
-            print("Nie masz aktualnie wypożyczonych książek.")
+            print("Brak wypożyczonych książek.")
             return
 
         for index, book in enumerate(reader.borrowed_books, start=1):
-            print(f"{index}. {book.title} — {book.author}")
+            print(f"{index}. {book.title} - {book.author}")
 
     def create_extension_request(self, reader):
         print("\n=== PROŚBA O PRZEDŁUŻENIE ===")
@@ -177,25 +271,28 @@ class Library:
 
     def show_all_borrowings(self):
         print("\n=== WSZYSTKIE WYPOŻYCZENIA ===")
-        found = False
 
-        for user in self.__users:
-            if isinstance(user, Reader):
-                for book in user.borrowed_books:
-                    print(f"Użytkownik: {user.login} | Książka: {book.title} — {book.author}")
-                    found = True
+        borrowings = [
+            (user.login, book)
+            for user in self.__users
+            if isinstance(user, Reader)
+            for book in user.borrowed_books
+        ]
 
-        if not found:
+        if not borrowings:
             print("Brak aktualnych wypożyczeń.")
+            return
+
+        for login, book in borrowings:
+            print(f"Użytkownik: {login} | Książka: {book.title} - {book.author}")
 
     def handle_extension_requests(self):
         print("\n=== OBSŁUGA PRÓŚB O PRZEDŁUŻENIE ===")
 
-        pending_requests = []
-
-        for request in self.__extension_queue:
-            if request["status"] == "oczekuje":
-                pending_requests.append(request)
+        pending_requests = [
+            request for request in self.__extension_queue
+            if request["status"] == "oczekuje"
+        ]
 
         if not pending_requests:
             print("Brak próśb do obsłużenia.")
@@ -204,7 +301,15 @@ class Library:
         for index, request in enumerate(pending_requests, start=1):
             reader = request["reader"]
             book = request["book"]
-            print(f"{index}. {reader.login} prosi o przedłużenie książki: {book.title}")
+
+            reservation_info = (
+                "TAK" if book.has_reservations() else "NIE"
+            )
+
+            print(
+                f"{index}. {reader.login} prosi o przedłużenie: {book.title} "
+                f"| Rezerwacja na tę książkę: {reservation_info}"
+            )
 
         choice = input("Podaj numer prośby do obsłużenia: ")
 
@@ -228,6 +333,48 @@ class Library:
             print("Prośba została odrzucona.")
         else:
             print("Niepoprawna decyzja.")
+
+    def show_statistics(self):
+        print("\n=== STATYSTYKI BIBLIOTEKARZA ===")
+
+        # comprehension
+        borrowed_counts = [book.borrowed_count() for book in self.__books]
+
+        total_borrowings = sum(borrowed_counts)
+
+        # filter + lambda
+        borrowed_books = list(filter(lambda book: book.borrowed_count() > 0, self.__books))
+
+        if borrowed_books:
+            most_popular = max(borrowed_books, key=lambda book: book.borrowed_count())
+            print(f"Najpopularniejsza książka: {most_popular.title}")
+        else:
+            print("Najpopularniejsza książka: brak danych")
+
+        print(f"Liczba aktywnych wypożyczeń ogółem: {total_borrowings}")
+
+        readers = list(filter(lambda user: isinstance(user, Reader), self.__users))
+
+        sorted_readers = sorted(
+            readers,
+            key=lambda reader: len(reader.borrowed_books),
+            reverse=True
+        )
+
+        # comprehension
+        reader_stats = {
+            reader.login: len(reader.borrowed_books)
+            for reader in sorted_readers
+        }
+
+        print("Czytelnicy według liczby wypożyczonych książek:")
+
+        if not reader_stats:
+            print("Brak czytelników.")
+            return
+
+        for login, count in reader_stats.items():
+            print(f"{login}: {count}")
 
 
 def login_user(library):
@@ -262,9 +409,15 @@ def handle_reader_choice(library, reader, choice):
     elif choice == "4":
         library.create_extension_request(reader)
     elif choice == "5":
+        library.search_books()
+    elif choice == "6":
+        library.sort_books()
+    elif choice == "7":
+        library.reserve_book(reader)
+    elif choice == "8":
         print("Wylogowano.")
         return "logout"
-    elif choice == "6":
+    elif choice == "9":
         return "exit"
     else:
         print("Niepoprawny wybór.")
@@ -280,9 +433,15 @@ def handle_librarian_choice(library, choice):
     elif choice == "3":
         library.handle_extension_requests()
     elif choice == "4":
+        library.search_books()
+    elif choice == "5":
+        library.sort_books()
+    elif choice == "6":
+        library.show_statistics()
+    elif choice == "7":
         print("Wylogowano.")
         return "logout"
-    elif choice == "5":
+    elif choice == "8":
         return "exit"
     else:
         print("Niepoprawny wybór.")
@@ -312,7 +471,6 @@ def user_session(library, user):
 def create_library():
     library = Library()
 
-    # Dane początkowe tworzone jako instancje klas
     library.add_book(Book("Wiedźmin", "Andrzej Sapkowski", 3))
     library.add_book(Book("Lalka", "Bolesław Prus", 2))
     library.add_book(Book("Pan Tadeusz", "Adam Mickiewicz", 4))

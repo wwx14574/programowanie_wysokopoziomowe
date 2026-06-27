@@ -1,78 +1,82 @@
-# Biblioteka
+Biblioteka - Zajęcia 3
 
 Aplikacja zaliczeniowa z przedmiotu Programowanie Wysokopoziomowe.
 
 ---
 
-## Zajęcia 1 - Programowanie strukturalne
+Temat
 
-Aplikacja biblioteczna napisana z wykorzystaniem programowania strukturalnego.
+Biblioteka - rozszerzenie projektu z wykorzystaniem programowania funkcyjnego.
 
-### Funkcjonalności
-
-- logowanie użytkownika
-- limit 3 prób logowania
-- przeglądanie katalogu książek
-- wypożyczanie książek
-- podgląd własnych wypożyczeń
-- wylogowanie
-
-### Dane
-
-Program działa na danych zapisanych na sztywno w kodzie:
-
-- co najmniej 5 książek
-- 3 użytkowników z rolą „czytelnik”
-
-### Uruchomienie
-
-```bash
-python3 zad1.py
-```
 ---
 
-## Zajęcia 2 - Programowanie obiektowe
+Funkcjonalności
 
-Refaktoryzacja aplikacji do wersji obiektowej (OOP).
+Funkcje dostępne dla czytelnika
 
-### Zastosowane klasy
+- logowanie użytkownika,
+- limit 3 prób logowania,
+- przeglądanie katalogu książek,
+- wypożyczanie książek,
+- podgląd własnych wypożyczeń,
+- wysyłanie próśb o przedłużenie wypożyczenia,
+- wyszukiwanie książek po tytule lub autorze,
+- filtrowanie dostępnych książek,
+- sortowanie katalogu,
+- rezerwacja niedostępnych książek,
+- wylogowanie.
 
-- Book
-- User
-- Reader
-- Librarian
-- Library
+Funkcje dostępne dla bibliotekarza
 
-### Funkcjonalności
+- przeglądanie katalogu,
+- podgląd wszystkich wypożyczeń,
+- obsługa próśb o przedłużenie,
+- wyszukiwanie i filtrowanie książek,
+- sortowanie katalogu,
+- wyświetlanie statystyk biblioteki,
+- wylogowanie.
 
-#### Czytelnik
+---
 
-- logowanie użytkownika
-- przeglądanie katalogu książek
-- wypożyczanie książek
-- podgląd własnych wypożyczeń
-- wysyłanie próśb o przedłużenie
-- wylogowanie
+Zastosowane elementy programowania funkcyjnego
 
-#### Bibliotekarz
+W projekcie wykorzystano:
 
-- przeglądanie katalogu książek
-- podgląd wszystkich wypożyczeń
-- obsługa próśb o przedłużenie
-- wylogowanie
+- "lambda",
+- "filter()",
+- "sorted()" z parametrem "key",
+- list comprehensions,
+- dict comprehensions,
+- funkcję wyższego rzędu przyjmującą funkcję jako argument.
 
-### Programowanie obiektowe
+---
 
-W projekcie zastosowano:
+Dane początkowe
 
-- klasy i obiekty
-- dziedziczenie
-- hermetyzację
-- polimorfizm
-- metodę specjalną __str__
+Program uruchamia się z przykładowymi danymi:
 
-### Uruchomienie
-```
-bash
-python3 zad2.py
-```
+Książki
+
+- Wiedźmin
+- Lalka
+- Pan Tadeusz
+- Zbrodnia i kara
+- Harry Potter
+
+Użytkownicy
+
+Login| Hasło| Rola
+ania| 1234| czytelnik
+jan| abcd| czytelnik
+ola| qwerty| czytelnik
+admin| admin| bibliotekarz
+
+---
+
+Uruchomienie
+
+python zad3.py
+
+lub
+
+python3 zad3.py
