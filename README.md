@@ -1,4 +1,4 @@
-###Biblioteka - Zajęcia 3
+Biblioteka - Zajęcia 3
 
 Aplikacja zaliczeniowa z przedmiotu Programowanie Wysokopoziomowe.
 
